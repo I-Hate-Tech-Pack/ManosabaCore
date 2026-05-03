@@ -156,6 +156,14 @@ voicechat:
   # Display name of the group that dead players are moved into.
   dead-group-name: 'Spectator'
 
+  # SVC group type for the spectator pool. One of:
+  #   NORMAL   - members hear each other group-wide AND nearby alive players (proximity);
+  #              alive players also hear nearby spectators. Two-way bleed.
+  #   OPEN     - members hear each other group-wide AND nearby alive players (proximity).
+  #              Alive players do NOT hear spectators. (recommended for horror/PvP maps)
+  #   ISOLATED - members only hear each other; cannot hear or be heard by alive players.
+  dead-group-type: OPEN
+
   # How often (in server ticks) to recheck every player's death state and
   # move them between the dead group and "no group". 20 ticks = 1 second.
   sync-period-ticks: 20

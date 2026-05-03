@@ -304,6 +304,7 @@ public record ProximityChatConfig(
     public record VoicechatConfig(
             boolean enabled,
             @NotNull String deadGroupName,
+            @NotNull String deadGroupType,
             long syncPeriodTicks
     ) {
 
@@ -313,16 +314,18 @@ public record ProximityChatConfig(
             }
             boolean enabled = section.getBoolean("enabled", true);
             String name = section.getString("dead-group-name", "Spectator");
+            String type = section.getString("dead-group-type", "OPEN");
             long period = Math.max(1L, section.getLong("sync-period-ticks", 20L));
             return new VoicechatConfig(
                     enabled,
                     name == null || name.isEmpty() ? "Spectator" : name,
+                    type == null || type.isEmpty() ? "OPEN" : type.trim().toUpperCase(Locale.ROOT),
                     period
             );
         }
 
         public static @NotNull VoicechatConfig defaults() {
-            return new VoicechatConfig(true, "Spectator", 20L);
+            return new VoicechatConfig(true, "Spectator", "OPEN", 20L);
         }
     }
 }

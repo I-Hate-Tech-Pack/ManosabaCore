@@ -12,6 +12,7 @@ import de.maxhenkel.voicechat.api.events.VoicechatServerStoppedEvent;
 import io.github.manosaba.core.ManosabaCore;
 import io.github.manosaba.core.config.ProximityChatConfig;
 import io.github.manosaba.core.game.DeathStatus;
+import java.util.Locale;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitTask;
@@ -91,11 +92,21 @@ public final class ManosabaVoicechatPlugin implements VoicechatPlugin {
         }
         ProximityChatConfig cfg = plugin.chatConfig();
         String name = cfg != null ? cfg.voicechat().deadGroupName() : "Spectator";
+        String typeRaw = cfg != null ? cfg.voicechat().deadGroupType() : "OPEN";
+        Group.Type type = parseGroupType(typeRaw);
         this.deadGroup = api.groupBuilder()
                 .setPersistent(true)
                 .setName(name)
-                .setType(Group.Type.ISOLATED)
+                .setType(type)
                 .build();
+    }
+
+    private static @NotNull Group.Type parseGroupType(@NotNull String raw) {
+        return switch (raw.toUpperCase(Locale.ROOT)) {
+            case "NORMAL"   -> Group.Type.NORMAL;
+            case "ISOLATED" -> Group.Type.ISOLATED;
+            default         -> Group.Type.OPEN;
+        };
     }
 
     private void startSync() {
